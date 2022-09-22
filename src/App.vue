@@ -29,7 +29,7 @@ const store = useStore();
     </header> -->
     <!-- <RouterView /> -->
 
-    <section>
+    <section class="main-pokemon">
         <Select
             :options="delve(store, 'pokemonList.results', 'No queries found')"
         />
@@ -50,7 +50,19 @@ const store = useStore();
     </section>
 </template>
 
-<style scoped>
+<style scoped lang="scss">
+@import '@inkline/inkline/css/variables';
+@import '@inkline/inkline/css/mixins';
+.main-pokemon {
+    width: 100%;
+
+    @include breakpoint-up('md') {
+        max-width: 50%;
+        margin: 0 auto;
+    }
+}
+
+/*
 header {
     line-height: 1.5;
     max-height: 100vh;
@@ -111,5 +123,5 @@ nav a:first-of-type {
         padding: 1rem 0;
         margin-top: 1rem;
     }
-}
+} */
 </style>
