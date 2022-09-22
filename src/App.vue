@@ -1,6 +1,6 @@
 <script setup lang="ts">
 // import { RouterLink, RouterView } from 'vue-router';
-// import delve from 'dlv';
+import delve from 'dlv';
 import Select from './components/CompSelect.vue';
 import { useStore } from '@/stores/data';
 
@@ -29,8 +29,9 @@ const store = useStore();
     <!-- <RouterView /> -->
 
     <section>
-        <Select :options="store.pokemon.results" />
-        <!-- <pre>{{ store.pokemon.results }}</pre> -->
+        <Select
+            :options="delve(store, 'pokemonList.results', 'No queries found')"
+        />
     </section>
 </template>
 

@@ -1,24 +1,32 @@
 <script setup lang="ts">
 import { ref } from 'vue';
+import { useStore } from '@/stores/data';
 import type { Ref } from 'vue';
-type Item = { name: string; url: string } | undefined;
+import type { pokemonItem } from '@/stores/data';
 
 defineProps({
-    options: [],
+    options: Array,
 });
 
-const selected: Ref<Item> = ref();
+const selected: Ref<pokemonItem> = ref();
 
-function selection(query: string) {
-    console.log(query, selected.value?.url);
+const store = useStore();
+
+function onSelection(query: string) {
+    if (!query) return;
+
+    const selectedPokemon: pokemonItem = {
+        name: query,
+        url: selected.value?.url,
+    };
+
+    store.updateSelectedPokemon(selectedPokemon);
 }
 </script>
 
 <template>
-    <p v-if="selected">Selected: {{ selected.name }} {{ selected.url }}</p>
-
     <i-select
-        @search="selection"
+        @search="onSelection"
         v-model="selected"
         :options="options"
         placeholder="Choose something.."

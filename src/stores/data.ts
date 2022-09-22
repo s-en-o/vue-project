@@ -1,16 +1,25 @@
 import { defineStore } from 'pinia';
+export type pokemonItem =
+    | {
+          name: string;
+          url: string | undefined;
+      }
+    | undefined;
 
 export const useStore = defineStore('pokemon', {
     state: () => {
         return {
-            pokemon: [] as Response | any,
+            pokemonList: null as Response | any,
+            pokemonSelected: {} as pokemonItem,
             error: '' as string | any,
         };
     },
-    getters: {},
+    getters: {
+        getPokemonList: (state) => state.pokemonList,
+    },
     actions: {
         /**
-         * Fetching data
+         * Fetching data from Pokemon endpoint
          */
         async fetchData() {
             try {
@@ -19,14 +28,19 @@ export const useStore = defineStore('pokemon', {
                 )
                     .then((response) => response.json())
                     .then((data) => {
-                        this.pokemon = data;
+                        this.pokemonList = data;
                     });
-
-                // console.log('fetching data:', results);
             } catch (error) {
                 this.error = error;
                 console.error(error);
             }
+        },
+        /**
+         * Updating selected pokemon in Store
+         * @param {Object} selectedPokemon - Pokemon object
+         */
+        updateSelectedPokemon(incomingSelectedPokemon: pokemonItem) {
+            this.pokemonSelected = incomingSelectedPokemon;
         },
     },
 });
