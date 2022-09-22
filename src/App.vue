@@ -38,7 +38,7 @@ const store = useStore();
 
         <Card
             class="_margin-top:2"
-            v-if="delve(store, 'pokemonSelected.name')"
+            v-if="delve(store, 'pokemonSelected.name') && !store.loading"
             :name="delve(store, 'pokemonSelected.name')"
             :image="
                 delve(
