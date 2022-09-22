@@ -29,7 +29,7 @@ function onSelection(query: string) {
         @search="onSelection"
         v-model="selected"
         :options="options"
-        placeholder="Choose something.."
+        placeholder="Choose Pokemon.."
         label="name"
         search
     />

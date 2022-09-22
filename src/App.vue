@@ -2,6 +2,7 @@
 // import { RouterLink, RouterView } from 'vue-router';
 import delve from 'dlv';
 import Select from './components/CompSelect.vue';
+import Card from './components/CompCard.vue';
 import { useStore } from '@/stores/data';
 
 const store = useStore();
@@ -31,6 +32,20 @@ const store = useStore();
     <section>
         <Select
             :options="delve(store, 'pokemonList.results', 'No queries found')"
+        />
+
+        <i-loader color="primary" size="auto" v-if="store.loading" />
+
+        <Card
+            class="_margin-top:2"
+            v-if="delve(store, 'pokemonSelected.name')"
+            :name="delve(store, 'pokemonSelected.name')"
+            :image="
+                delve(
+                    store,
+                    'pokemonSelected.sprites.other.official-artwork.front_default'
+                )
+            "
         />
     </section>
 </template>
