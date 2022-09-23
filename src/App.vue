@@ -9,17 +9,24 @@ import type { pokemonItem } from '@/stores/data';
 const store = useStore();
 
 const onButtonClick = (next: Boolean = true) => {
-    let pokemonIndex = store.pokemonList.results.findIndex(
+    const pokemonIndex = store.pokemonList.results.findIndex(
         (eachPokemon: pokemonItem | any) =>
             eachPokemon.name === store.pokemonSelected?.name
     );
 
     if (next) {
-        let pokemonNextIndex = pokemonIndex + 1;
-        let pokemonNext = store.pokemonList.results[pokemonNextIndex];
+        const pokemonNextIndex = pokemonIndex + 1;
+        const pokemonNext = store.pokemonList.results[pokemonNextIndex];
 
         if (pokemonNextIndex < store.pokemonList.results.length) {
             store.updateSelectedPokemon(pokemonNext);
+        }
+    } else {
+        const pokemonPrevIndex = pokemonIndex - 1;
+        const pokemonPrev = store.pokemonList.results[pokemonPrevIndex];
+
+        if (pokemonPrevIndex >= 0) {
+            store.updateSelectedPokemon(pokemonPrev);
         }
     }
 };
