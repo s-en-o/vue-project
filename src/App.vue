@@ -4,8 +4,25 @@ import delve from 'dlv';
 import Select from './components/CompSelect.vue';
 import Card from './components/CompCard.vue';
 import { useStore } from '@/stores/data';
+import type { pokemonItem } from '@/stores/data';
 
 const store = useStore();
+
+const onButtonClick = (next: Boolean = true) => {
+    let pokemonIndex = store.pokemonList.results.findIndex(
+        (eachPokemon: pokemonItem | any) =>
+            eachPokemon.name === store.pokemonSelected?.name
+    );
+
+    if (next) {
+        let pokemonNextIndex = pokemonIndex + 1;
+        let pokemonNext = store.pokemonList.results[pokemonNextIndex];
+
+        if (pokemonNextIndex < store.pokemonList.results.length) {
+            store.updateSelectedPokemon(pokemonNext);
+        }
+    }
+};
 </script>
 
 <template>
@@ -36,23 +53,45 @@ const store = useStore();
 
         <i-loader color="primary" size="auto" v-if="store.loading" />
 
-        <Card
-            class="_margin-top:2"
+        <div
             v-if="delve(store, 'pokemonSelected.name') && !store.loading"
-            :name="delve(store, 'pokemonSelected.name')"
-            :image="
-                delve(
-                    store,
-                    'pokemonSelected.sprites.other.official-artwork.front_default'
-                )
-            "
-        />
+            class="content"
+        >
+            <Card
+                class="_margin-top:2"
+                :name="delve(store, 'pokemonSelected.name')"
+                :image="
+                    delve(
+                        store,
+                        'pokemonSelected.sprites.other.official-artwork.front_default'
+                    )
+                "
+            />
+
+            <div class="card-action">
+                <i-button
+                    :disabled="!store.pokemonSelected"
+                    color="primary"
+                    @click="onButtonClick(false)"
+                >
+                    Previous
+                </i-button>
+                <i-button
+                    :disabled="!store.pokemonSelected"
+                    color="primary"
+                    @click="onButtonClick()"
+                >
+                    Next
+                </i-button>
+            </div>
+        </div>
     </section>
 </template>
 
 <style scoped lang="scss">
 @import '@inkline/inkline/css/variables';
 @import '@inkline/inkline/css/mixins';
+
 .main-pokemon {
     width: 100%;
 
@@ -60,6 +99,11 @@ const store = useStore();
         max-width: 50%;
         margin: 0 auto;
     }
+}
+
+.card-action {
+    display: flex;
+    justify-content: space-between;
 }
 
 /*

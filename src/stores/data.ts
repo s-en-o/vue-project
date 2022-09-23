@@ -9,8 +9,8 @@ export type pokemonItem =
 export const useStore = defineStore('pokemon', {
     state: () => {
         return {
-            pokemonList: null as Response | any,
-            pokemonSelected: {} as pokemonItem,
+            pokemonList: undefined as Response | any,
+            pokemonSelected: undefined as pokemonItem,
             error: '' as string | any,
             loading: false,
         };
@@ -33,16 +33,16 @@ export const useStore = defineStore('pokemon', {
                     .then((data) => {
                         this.pokemonList = data;
                     });
-
-                this.loading = false;
             } catch (error) {
                 this.error = error;
                 console.error(error);
+            } finally {
+                this.loading = false;
             }
         },
         /**
          * Updating selected pokemon in Store
-         * @param {Object} selectedPokemon - Pokemon object
+         * @param {Object} incomingSelectedPokemon - Pokemon object
          */
         async updateSelectedPokemon(incomingSelectedPokemon: pokemonItem) {
             this.loading = true;
@@ -55,11 +55,14 @@ export const useStore = defineStore('pokemon', {
                         this.pokemonSelected = data;
                     })
                 );
-
-                this.loading = false;
             } catch (error) {
                 console.log(error);
+            } finally {
+                this.loading = false;
             }
         },
+        /**
+         * Find the next Pokemon in the array
+         */
     },
 });

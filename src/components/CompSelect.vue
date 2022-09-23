@@ -15,6 +15,8 @@ const store = useStore();
 function onSelection(query: string) {
     if (!query) return;
 
+    // console.log(selected.value);
+
     const selectedPokemon: pokemonItem = {
         name: query,
         url: selected.value?.url,
