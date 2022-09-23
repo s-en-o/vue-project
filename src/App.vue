@@ -8,25 +8,25 @@ import type { pokemonItem } from '@/stores/data';
 
 const store = useStore();
 
-const onButtonClick = (next: Boolean = true) => {
-    const pokemonIndex = store.pokemonList.results.findIndex(
+const onPokemonSwap = (next: Boolean = true) => {
+    const pokemonCurrentIndex = store.pokemonList.results.findIndex(
         (eachPokemon: pokemonItem | any) =>
             eachPokemon.name === store.pokemonSelected?.name
     );
 
-    if (next) {
-        const pokemonNextIndex = pokemonIndex + 1;
-        const pokemonNext = store.pokemonList.results[pokemonNextIndex];
+    const pokemonToSwapIndex = next
+        ? pokemonCurrentIndex + 1
+        : pokemonCurrentIndex - 1;
 
-        if (pokemonNextIndex < store.pokemonList.results.length) {
-            store.updateSelectedPokemon(pokemonNext);
+    const pokemonToSwap = store.pokemonList.results[pokemonToSwapIndex];
+
+    if (next) {
+        if (pokemonToSwapIndex < store.pokemonList.results.length) {
+            store.updateSelectedPokemon(pokemonToSwap);
         }
     } else {
-        const pokemonPrevIndex = pokemonIndex - 1;
-        const pokemonPrev = store.pokemonList.results[pokemonPrevIndex];
-
-        if (pokemonPrevIndex >= 0) {
-            store.updateSelectedPokemon(pokemonPrev);
+        if (pokemonToSwapIndex >= 0) {
+            store.updateSelectedPokemon(pokemonToSwap);
         }
     }
 };
@@ -79,14 +79,14 @@ const onButtonClick = (next: Boolean = true) => {
                 <i-button
                     :disabled="!store.pokemonSelected"
                     color="primary"
-                    @click="onButtonClick(false)"
+                    @click="onPokemonSwap(false)"
                 >
                     Previous
                 </i-button>
                 <i-button
                     :disabled="!store.pokemonSelected"
                     color="primary"
-                    @click="onButtonClick()"
+                    @click="onPokemonSwap()"
                 >
                     Next
                 </i-button>
